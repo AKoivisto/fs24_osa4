@@ -2,8 +2,8 @@ post http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-    "title": "Otsikko 3",
-    "author": "Antto Koivu",
-    "url": "koivu.antto.com",
+    "title": "My history",
+    "author": "Mips",
+    "url": "mipsidipsi.com",
     "likes": 0
 }

@@ -3,8 +3,9 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const mongoose = require('mongoose')
+const config = require('./utils/config')
 
-const password = process.env.SALIS
+//const password = process.env.SALIS
 const url = `mongodb+srv://`
 const blogSchema = mongoose.Schema({
   title: String,
@@ -15,8 +16,8 @@ const blogSchema = mongoose.Schema({
 
 const Blog = mongoose.model('Blog', blogSchema)
 
-const mongoUrl = `mongodb+srv://anttonvkoivisto:${password}@phonebook-backend.608sw.mongodb.net/bloglist?retryWrites=true&w=majority&appName=Phonebook-backend`
-mongoose.connect(mongoUrl)
+////onst mongoUrl = `mongodb+srv://anttonvkoivisto:${password}@phonebook-backend.608sw.mongodb.net/bloglist?retryWrites=true&w=majority&appName=Phonebook-backend`
+mongoose.connect(config.MONGODB_URI)
 
 app.use(cors())
 app.use(express.json())

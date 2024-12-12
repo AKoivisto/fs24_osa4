@@ -2,8 +2,8 @@ post http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-    "title": "My history 34",
-    "author": "Gips",
-    "url": "gipsidipsi.com",
-    "likes": 0
+    "title": "Testing tests part 6",
+    "author": "Tester 3",
+    "url": "test.test.test235",
+    "likes": 10
 }

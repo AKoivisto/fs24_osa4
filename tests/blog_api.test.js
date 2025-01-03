@@ -42,6 +42,29 @@ test('How many blogs', async () => {
 
   })
 
+  test('add blogs', async () => {
+
+    const newBlog = {
+      title: 'test tests',
+      author: 'tester',
+      url: 'test.test.test2',
+      likes: 3
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const response = await api.get('/api/blogs')
+    const contents = response.body.map(r => r.content)
+
+    assert.strictEqual(response.body.length, helper.initialBlogs.length + 1)
+
+
+  })
+
   after(async () => {
     await mongoose.connection.close()
   })

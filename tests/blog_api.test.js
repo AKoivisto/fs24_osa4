@@ -83,6 +83,36 @@ test('How many blogs', async () => {
     assert.strictEqual(postedBlog.likes, 0)
   })
 
+  test('if no title or url, 400 bad request', async () => {
+    const newBlog = {
+      author: 'tester 5',
+      url: 'test.test.test22',
+    }
+
+    const newBlog2 = {
+      title: 'tester 5',
+      author: 'test.test.test22',
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+
+    const response = await api.get('/api/blogs')
+
+    assert.strictEqual(response.body.length, helper.initialBlogs.length)
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog2)
+      .expect(400)
+
+    const response2 = await api.get('/api/blogs')
+
+    assert.strictEqual(response2.body.length, helper.initialBlogs.length)
+  })
+
   after(async () => {
     await mongoose.connection.close()
   })

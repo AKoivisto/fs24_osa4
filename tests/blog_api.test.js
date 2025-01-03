@@ -45,10 +45,10 @@ test('How many blogs', async () => {
   test('add blogs', async () => {
 
     const newBlog = {
-      title: 'test tests',
-      author: 'tester',
-      url: 'test.test.test2',
-      likes: 3
+      title: 'test tests 25',
+      author: 'tester 5',
+      url: 'test.test.test22',
+      likes: 322
     }
 
     await api
@@ -63,6 +63,25 @@ test('How many blogs', async () => {
     assert.strictEqual(response.body.length, helper.initialBlogs.length + 1)
 
 
+  })
+
+  test('likes = 0', async () => {
+    const newBlog2 = {
+      title: 'test tests 25',
+      author: 'tester 5',
+      url: 'test.test.test22',
+    }
+
+    const response = await api
+      .post('/api/blogs')
+      .send(newBlog2)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const postedBlog = response.body
+    console.log(response)
+
+    assert.strictEqual(postedBlog.likes, 0)
   })
 
   after(async () => {

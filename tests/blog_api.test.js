@@ -32,6 +32,16 @@ test('How many blogs', async () => {
     assert.strictEqual(response.body.length, 3)
   })
 
+  test('id, not _id', async () => {
+    const response = await api.get('/api/blogs')
+
+    response.body.forEach((blog) => {
+        assert.ok(blog.id)
+        assert.strictEqual(blog._id, undefined)
+      });
+
+  })
+
   after(async () => {
     await mongoose.connection.close()
   })

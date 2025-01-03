@@ -79,7 +79,6 @@ test('How many blogs', async () => {
       .expect('Content-Type', /application\/json/)
 
     const postedBlog = response.body
-    console.log(response)
 
     assert.strictEqual(postedBlog.likes, 0)
   })

@@ -132,6 +132,30 @@ test('How many blogs', async () => {
 
   })
 
+  test('edit blog', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const toEdit = blogsAtStart[0]
+
+    const editedBlog = {
+      title: 'Edited Test',
+      author: 'tester',
+      url: 'test.test.test2',
+      likes: '4'
+    }
+
+    await api
+    .put(`/api/blogs/${toEdit.id}`)
+    .send(editedBlog)
+    .expect(200)
+
+    const blogsAtEnd = await helper.blogsInDb()
+
+    assert.strictEqual(blogsAtEnd[0].likes, 4)
+    assert.strictEqual(blogsAtEnd[0].title, 'Edited Test')
+
+
+  })
+
   after(async () => {
     await mongoose.connection.close()
   })

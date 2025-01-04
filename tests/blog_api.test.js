@@ -8,12 +8,6 @@ const Blog = require('../models/blog')
 
 const api = supertest(app)
 
-// beforeEach(async () => {
-// await Blog.deleteMany({})
-
-// await Blog.insertMany(helper.initialBlogs)
-// })
-
 beforeEach(async () => {
     await Blog.deleteMany({});
     await Blog.insertMany(helper.initialBlogs);
@@ -155,6 +149,7 @@ test('How many blogs', async () => {
 
 
   })
+
 
   after(async () => {
     await mongoose.connection.close()

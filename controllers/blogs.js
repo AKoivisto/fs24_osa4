@@ -16,7 +16,6 @@ blogsRouter.get('/:id', async (request, response) => {
     }
 })
 
-
 blogsRouter.post('/', async (request, response) => {
     const body = request.body
 
@@ -33,8 +32,6 @@ blogsRouter.post('/', async (request, response) => {
     } catch (error) {
         response.status(400).json({error: 'Title or url missing'})
     }
-    
-    
 })
 
 blogsRouter.put('/:id', async (request, response) => {
@@ -51,7 +48,6 @@ blogsRouter.put('/:id', async (request, response) => {
     response.json(updatedBlog)
 
 })
-
 
 blogsRouter.delete('/:id', async (request, response) => {
     await Blog.findByIdAndDelete(request.params.id)

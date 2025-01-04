@@ -113,6 +113,25 @@ test('How many blogs', async () => {
     assert.strictEqual(response2.body.length, helper.initialBlogs.length)
   })
 
+  test('delete  one blog', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    //console.log(blogsAtStart)
+    const toDelete = blogsAtStart[0]
+    //console.log(toDelete.id)
+
+    await api
+    .delete(`/api/blogs/${toDelete.id}`)
+    .expect(204)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    //console.log(blogsAtEnd)
+    
+    const contents = blogsAtEnd.map(r => r.content)
+    assert(!contents.includes(toDelete.title))
+    assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length -1)
+
+  })
+
   after(async () => {
     await mongoose.connection.close()
   })

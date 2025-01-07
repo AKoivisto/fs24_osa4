@@ -2,9 +2,9 @@ post http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-    "title": "I Love Winter",
-    "author": "Ma Lu",
-    "url": "blogger.com/blogger_winter2025",
+    "title": "benefits of fullstack open",
+    "author": "Antti Salo",
+    "url": "blogger.com/fullstack",
     "likes": 3,
-    "userId": "677bec5831a2307b758d4f85"
+    "userId": "677d1463dead9881d9f23fa5"
 }

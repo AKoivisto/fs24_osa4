@@ -2,8 +2,9 @@ post http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-    "title": "Testing tests part 6",
-    "author": "Tester 3",
-    "url": "test.test.test235",
-    "likes": 10
+    "title": "I Love Winter",
+    "author": "Ma Lu",
+    "url": "blogger.com/blogger_winter2025",
+    "likes": 3,
+    "userId": "677bec5831a2307b758d4f85"
 }

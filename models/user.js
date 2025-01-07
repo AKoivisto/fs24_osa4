@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
         unique: true
     },
     name: String,
-    passswordHash: String,
+    passwordHash: String,
     blogs: [
         {
             type: mongoose.Schema.Types.ObjectId,

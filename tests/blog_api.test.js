@@ -15,6 +15,8 @@ describe('Blog tests', () => {
 beforeEach(async () => {
     await Blog.deleteMany({});
     await Blog.insertMany(helper.initialBlogs);
+    await User.deleteMany({})
+    await helper.newUserLogin()
   });
 
 test('blogs are returned as json', async () => {
@@ -49,17 +51,17 @@ test('How many blogs', async () => {
       likes: 322
     }
 
-    await api
-      .post('/api/blogs')
+    const userLoggedIn = await api.post('/api/login').send(helper.testUser)
+  
+    await api.post('/api/blogs')
+      .set('Authorization', `Bearer ${userLoggedIn.body.token}`)
       .send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
 
     const response = await api.get('/api/blogs')
-    const contents = response.body.map(r => r.content)
 
     assert.strictEqual(response.body.length, helper.initialBlogs.length + 1)
-
 
   })
 
@@ -70,8 +72,11 @@ test('How many blogs', async () => {
       url: 'test.test.test22',
     }
 
+    const userLoggedIn = await api.post('/api/login').send(helper.testUser)
+
     const response = await api
       .post('/api/blogs')
+      .set('Authorization', `Bearer ${userLoggedIn.body.token}`)
       .send(newBlog2)
       .expect(201)
       .expect('Content-Type', /application\/json/)
@@ -92,8 +97,11 @@ test('How many blogs', async () => {
       author: 'test.test.test22',
     }
 
+    const userLoggedIn = await api.post('/api/login').send(helper.testUser)
+
     await api
       .post('/api/blogs')
+      .set('Authorization', `Bearer ${userLoggedIn.body.token}`)
       .send(newBlog)
       .expect(400)
 
@@ -103,6 +111,7 @@ test('How many blogs', async () => {
 
     await api
       .post('/api/blogs')
+      .set('Authorization', `Bearer ${userLoggedIn.body.token}`)
       .send(newBlog2)
       .expect(400)
 
@@ -111,22 +120,36 @@ test('How many blogs', async () => {
     assert.strictEqual(response2.body.length, helper.initialBlogs.length)
   })
 
-  test('delete  one blog', async () => {
+  test('delete one blog', async () => {
     const blogsAtStart = await helper.blogsInDb()
-    //console.log(blogsAtStart)
-    const toDelete = blogsAtStart[0]
-    //console.log(toDelete.id)
+    const userLoggedIn = await api.post('/api/login').send(helper.testUser)
 
+    const deleteThis = {
+      title: 'Blog to delete soon',
+      author: 'Deletor',
+      url: 'todelete.del',
+      likes: '18',
+    }
+
+    const blogToDelete = await api
+      .post('/api/blogs')
+      .set('Authorization', `Bearer ${userLoggedIn.body.token}`)
+      .send(deleteThis)
+
+    const blogsNow = await helper.blogsInDb()
+    assert.strictEqual(helper.initialBlogs.length + 1, blogsNow.length)
+    
     await api
-    .delete(`/api/blogs/${toDelete.id}`)
+    .delete(`/api/blogs/${blogToDelete.body.id}`)
+    .set('Authorization', `Bearer ${userLoggedIn.body.token}`)
     .expect(204)
 
     const blogsAtEnd = await helper.blogsInDb()
     //console.log(blogsAtEnd)
     
     const titles = blogsAtEnd.map(r => r.title)
-    assert(!titles.includes(toDelete.title))
-    assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length -1)
+    assert(!titles.includes(deleteThis.title))
+    assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length)
 
   })
 
@@ -150,10 +173,9 @@ test('How many blogs', async () => {
 
     assert.strictEqual(blogsAtEnd[0].likes, 4)
     assert.strictEqual(blogsAtEnd[0].title, 'Edited Test')
-
-
   })
 })
+
   describe('One user at db', () => {
     beforeEach(async () => {
       await User.deleteMany({})
@@ -280,7 +302,6 @@ test('How many blogs', async () => {
         assert.strictEqual(usersAtEnd.length, usersAtStart.length)
     })
   })
-
 
   after(async () => {
     await mongoose.connection.close()

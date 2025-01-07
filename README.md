@@ -1,2 +1,2 @@
-# fs24_osa4
+# Fullstack open -kurssin osion 4 tehtävät
  
